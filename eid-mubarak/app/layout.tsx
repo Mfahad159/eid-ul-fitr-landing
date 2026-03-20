@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Cormorant_Garamond,
   DM_Sans,
   Scheherazade_New,
 } from "next/font/google";
+import AOSProvider from "@/components/providers/AOSProvider";
 import "./globals.css";
 
 const cormorantGaramond = Cormorant_Garamond({
@@ -28,8 +29,19 @@ const scheherazadeNew = Scheherazade_New({
 });
 
 export const metadata: Metadata = {
-  title: "Eid Mubarak",
-  description: "Luxury dark-themed Eid Mubarak landing page",
+  title: "Eid Mubarak 1446H — Wishing You Joy & Blessings",
+  description:
+    "Sending warm Eid wishes, prayers, and blessings to you and your family. Eid Mubarak!",
+  openGraph: {
+    title: "Eid Mubarak 1446H — Wishing You Joy & Blessings",
+    description:
+      "Sending warm Eid wishes, prayers, and blessings to you and your family. Eid Mubarak!",
+    type: "website",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0f0d",
 };
 
 export default function RootLayout({
@@ -42,8 +54,12 @@ export default function RootLayout({
       lang="en"
       className={`${cormorantGaramond.variable} ${dmSans.variable} ${scheherazadeNew.variable}`}
     >
-      <body className="min-h-screen bg-eid-black font-body text-eid-cream antialiased">
-        {children}
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
+      <body className="min-h-[100svh] bg-eid-black font-body text-eid-cream antialiased">
+        <AOSProvider>{children}</AOSProvider>
       </body>
     </html>
   );

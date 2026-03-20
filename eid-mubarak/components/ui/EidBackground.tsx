@@ -1,6 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { memo } from "react";
+import { IconMoon, IconStar, IconStarFilled } from "@tabler/icons-react";
+import { motion, useTransform } from "framer-motion";
+import { useScrollProgress } from "@/lib/useScrollProgress";
+import { useMotionSettings } from "@/lib/useMotionSettings";
 
 type Particle = {
   id: number;
@@ -14,8 +18,16 @@ type Particle = {
 
 const PARTICLE_COUNT = 60;
 
+const starPositions = [
+  { top: "25%", left: "15%", size: 12, opacity: 0.08 },
+  { top: "45%", right: "10%", size: 8, opacity: 0.05 },
+  { top: "60%", left: "5%", size: 16, opacity: 0.07 },
+  { top: "75%", right: "20%", size: 10, opacity: 0.06 },
+  { top: "85%", left: "25%", size: 14, opacity: 0.04 },
+] as const;
+
 function seededValue(seed: number) {
-  return Math.abs(Math.sin(seed) * 10000) % 1;
+  return Number((Math.abs(Math.sin(seed) * 10000) % 1).toFixed(4));
 }
 
 function createParticles(): Particle[] {
@@ -53,7 +65,22 @@ const patternSvg = `
 
 const patternUrl = `url("data:image/svg+xml,${encodeURIComponent(patternSvg)}")`;
 
-export default function EidBackground() {
+function EidBackground() {
+  const scrollYProgress = useScrollProgress();
+  const { isMobile } = useMotionSettings();
+  const particlesY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -80 : -200]);
+  const glowScale = useTransform(scrollYProgress, [0, 0.5], [1, 1.6]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.4, 1], [0.1, 0.2, 0.05]);
+  const moonY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -24 : -60]);
+  const moonRotate = useTransform(scrollYProgress, [0, 1], [0, 15]);
+  const topStarY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -12 : -30]);
+  const starOneY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -3 : -8]);
+  const starTwoY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -6 : -16]);
+  const starThreeY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -10 : -24]);
+  const starFourY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -13 : -32]);
+  const starFiveY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -16 : -40]);
+  const clusterTransforms = [starOneY, starTwoY, starThreeY, starFourY, starFiveY];
+
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
@@ -65,34 +92,59 @@ export default function EidBackground() {
       />
 
       <motion.div
-        className="absolute right-[8%] top-[6%] h-[600px] w-[600px] rounded-full"
-        animate={{ opacity: [0.06, 0.14, 0.06] }}
-        transition={{
-          duration: 4,
-          ease: "easeInOut",
-          repeat: Number.POSITIVE_INFINITY,
-        }}
+        className="absolute right-[8%] top-[6%] h-[600px] w-[600px] rounded-full will-change-transform"
         style={{
+          scale: glowScale,
+          opacity: glowOpacity,
           background:
             "radial-gradient(circle, rgba(201,168,76,0.08) 0%, rgba(201,168,76,0.03) 38%, rgba(201,168,76,0) 72%)",
         }}
       />
 
+      <motion.div
+        className="absolute will-change-transform"
+        style={{ top: "8%", right: "6%", y: moonY, rotate: moonRotate }}
+      >
+        <IconMoon size={120} stroke={0.5} color="rgba(201,168,76,0.06)" />
+      </motion.div>
+
+      <motion.div
+        className="absolute will-change-transform"
+        style={{ top: "15%", left: "8%", y: topStarY }}
+      >
+        <IconStarFilled size={48} color="rgba(201,168,76,0.05)" />
+      </motion.div>
+
+      {starPositions.map((star, index) => (
+        <motion.div
+          key={`${star.top}-${index}`}
+          className="absolute will-change-transform"
+          style={{ ...star, y: clusterTransforms[index] }}
+        >
+          <IconStar
+            size={star.size}
+            color={`rgba(201,168,76,${star.opacity})`}
+          />
+        </motion.div>
+      ))}
+
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-[0.02] md:opacity-[0.04]"
         style={{
           backgroundImage: patternUrl,
           backgroundRepeat: "repeat",
           backgroundSize: "160px 160px",
-          opacity: 0.04,
         }}
       />
 
-      <div className="absolute inset-0">
+      <motion.div
+        className="absolute inset-0 will-change-transform"
+        style={{ y: particlesY }}
+      >
         {particles.map((particle) => (
           <motion.span
             key={particle.id}
-            className="absolute rounded-full bg-eid-gold"
+            className="absolute rounded-full bg-eid-gold will-change-transform"
             initial={{ y: -20 }}
             animate={{ y: [-20, 20, -20] }}
             transition={{
@@ -111,7 +163,9 @@ export default function EidBackground() {
             }}
           />
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
+
+export default memo(EidBackground);
