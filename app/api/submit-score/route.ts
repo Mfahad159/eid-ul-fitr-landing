@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     // Max possible taps in 7s at ~8 taps/sec = ~56 taps
     // Max score without cheating = 500
     const maxReasonableTaps = 70
-    const maxScore = 300
+    const maxScore = 450
 
     if (
       score > maxScore ||

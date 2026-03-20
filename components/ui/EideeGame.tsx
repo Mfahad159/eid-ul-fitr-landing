@@ -113,10 +113,10 @@ export function EideeGame({ onClose }: EideeGameProps) {
   }, [screen]);
 
   function endGame() {
-    // Making it easier: exponent 1.2 instead of 2.8, max 200, min 30 (if they tapped at all)
-    const baseScore = Math.pow(powerRef.current / 100, 1.2) * 170;
-    const finalEidee = tapCountRef.current > 0 ? Math.round(baseScore + 30) : 0;
-    const clampedEidee = Math.min(200, Math.max(0, finalEidee));
+    // Scales: exponent 1.2, max 400, min 50
+    const baseScore = Math.pow(powerRef.current / 100, 1.2) * 350;
+    const finalEidee = tapCountRef.current > 0 ? Math.round(baseScore + 50) : 0;
+    const clampedEidee = Math.min(400, Math.max(0, finalEidee));
     setEidee(clampedEidee);
     setDisplayEidee(0);
 
@@ -230,7 +230,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
 
       <div className="mt-8">
         <div className="font-display text-4xl text-eid-gold font-bold mb-1">Rs. 500</div>
-        <div className="text-xs text-eid-muted">(good luck exceeding Rs. 100)</div>
+        <div className="text-xs text-eid-muted">(good luck exceeding Rs. 200)</div>
       </div>
 
       <button
