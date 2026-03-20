@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import { CardsSection } from "@/components/sections/CardsSection";
+import { LeaderboardSection } from "@/components/sections/LeaderboardSection";
 import { CalligraphySection } from "@/components/sections/CalligraphySection";
 import { Footer } from "@/components/sections/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
@@ -28,6 +29,7 @@ export default function Home() {
         <EidMarquee />
         <GoldDivider />
         <CardsSection />
+        <LeaderboardSection />
         <CalligraphySection />
         <SignatureSection />
         <GoldDivider />

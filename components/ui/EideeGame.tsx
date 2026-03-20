@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 
-type Screen = "intro" | "playing" | "result";
+type Screen = "intro" | "playing" | "name-entry" | "result";
 
 const DURATION_MS = 7000;
 const DECAY_RATE = 0.018; // power lost per 50ms tick
@@ -34,6 +34,10 @@ export function EideeGame({ onClose }: EideeGameProps) {
   // Result state
   const [eidee, setEidee] = useState(0);
   const [displayEidee, setDisplayEidee] = useState(0);
+
+  // Name Entry state
+  const [playerName, setPlayerName] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Refs for real-time game logic
   const startTimeRef = useRef(0);
@@ -79,13 +83,20 @@ export function EideeGame({ onClose }: EideeGameProps) {
   }, [screen]);
 
   function endGame() {
-    setScreen("result");
     const finalEidee = Math.round(Math.pow(powerRef.current / 100, 2.8) * 500);
     const clampedEidee = Math.min(500, Math.max(0, finalEidee));
     setEidee(clampedEidee);
     setDisplayEidee(0);
 
-    if (clampedEidee >= 100) {
+    if (clampedEidee >= 10 && playerName.trim()) {
+      submitScoreBackground(clampedEidee);
+    }
+    showResultScreen(clampedEidee);
+  }
+
+  function showResultScreen(eideeAmt: number) {
+    setScreen("result");
+    if (eideeAmt >= 100) {
       setTimeout(() => {
         confetti({
           particleCount: 80,
@@ -95,6 +106,23 @@ export function EideeGame({ onClose }: EideeGameProps) {
           zIndex: 9000,
         });
       }, 500);
+    }
+  }
+
+  async function submitScoreBackground(scoreAmt: number) {
+    try {
+      await fetch('/api/submit-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: playerName.slice(0, 20),
+          score: scoreAmt,
+          tapCount,
+          duration: DURATION_MS
+        })
+      });
+    } catch (error) {
+      console.error("Failed to submit score:", error);
     }
   }
 
@@ -169,7 +197,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
       </div>
 
       <button
-        onClick={() => setScreen("playing")}
+        onClick={() => setScreen("name-entry")}
         className="mt-8 w-full rounded-xl bg-eid-gold py-4 font-body font-bold text-eid-black transition-transform hover:scale-[1.03] active:scale-95 shadow-lg"
       >
         Start
@@ -279,6 +307,46 @@ export function EideeGame({ onClose }: EideeGameProps) {
     );
   };
 
+  const renderNameEntry = () => (
+    <div className="flex h-full min-h-[460px] flex-col items-center justify-center p-8 pt-12 text-center">
+      <h2 className="font-body text-[1.1rem] text-eid-cream">
+        Who are you?
+      </h2>
+      <p className="mt-1 text-sm text-eid-muted">
+        Enter your name for the leaderboard
+      </p>
+
+      <div className="mt-8 w-full max-w-[280px]">
+        <input
+          type="text"
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
+          placeholder="Your name..."
+          maxLength={20}
+          className="w-full rounded-xl border border-eid-gold/30 bg-eid-green/20 px-4 py-3 text-center font-body text-[16px] text-eid-cream placeholder:text-eid-gold/30 focus:border-eid-gold focus:outline-none focus:ring-1 focus:ring-eid-gold"
+        />
+      </div>
+
+      <div className="mt-12 flex w-full max-w-[280px] gap-3">
+        <button
+          onClick={() => setScreen("playing")}
+          className="flex-1 rounded-xl border border-eid-gold/30 bg-transparent py-3 font-body text-sm font-bold text-eid-gold transition-colors hover:bg-eid-gold/10"
+        >
+          Skip
+        </button>
+        <button
+          onClick={() => {
+            if (playerName.trim()) setScreen("playing");
+          }}
+          disabled={!playerName.trim()}
+          className="flex-1 rounded-xl bg-eid-gold py-3 font-body text-sm font-bold text-eid-black transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
+        >
+          Let's Go!
+        </button>
+      </div>
+    </div>
+  );
+
   const renderResult = () => {
     let rankBadge = { bg: "bg-gray-800", text: "text-gray-300", label: "Asleep?", hint: "Bhai sona baad mein, pehle Eidee collect karo!" };
     if (eidee >= 400) rankBadge = { bg: "bg-amber-500", text: "text-black", label: "Legendary Tapper", hint: "Mashallah! You are built different. Eid Mubarak!" };
@@ -342,6 +410,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
     <div className="w-full relative h-[500px] flex flex-col">
       {screen === "intro" && renderIntro()}
       {screen === "playing" && renderPlaying()}
+      {screen === "name-entry" && renderNameEntry()}
       {screen === "result" && renderResult()}
     </div>
   );
