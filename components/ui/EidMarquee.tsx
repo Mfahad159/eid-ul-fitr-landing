@@ -1,23 +1,12 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
-import { useScrollProgress } from "@/lib/useScrollProgress";
-import { useMotionSettings } from "@/lib/useMotionSettings";
+import { motion } from "framer-motion";
 
 export default function EidMarquee() {
-  const scrollYProgress = useScrollProgress();
-  const { shouldReduceMotion } = useMotionSettings();
-  const opacity = useTransform(
-    scrollYProgress,
-    [0.1, 0.25, 0.6, 0.75],
-    shouldReduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0],
-  );
-
   return (
     <motion.section
       aria-label="Eid Marquee"
       className="relative z-10 overflow-hidden will-change-transform"
-      style={{ opacity }}
       data-aos="fade-up"
       data-aos-duration="500"
       data-aos-offset="50"
