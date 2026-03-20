@@ -1,0 +1,49 @@
+:root {
+  --eid-black: #0a0f0d;
+  --eid-green: #0d3b2e;
+  --eid-gold: #c9a84c;
+  --eid-gold-light: #e8c97e;
+  --eid-cream: #f5f0e8;
+  --eid-muted: #6b7b72;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top, rgba(201, 168, 76, 0.14), transparent 32%),
+    linear-gradient(180deg, rgba(13, 59, 46, 0.3), transparent 42%),
+    var(--eid-black);
+  color: var(--eid-cream);
+  font-family: var(--font-body), sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-eid-gold/10;
+  }
+
+  ::selection {
+    background-color: rgba(201, 168, 76, 0.22);
+    color: var(--eid-cream);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display), serif;
+  }
+
+  [lang="ar"] {
+    font-family: var(--font-arabic), serif;
+  }
+}
