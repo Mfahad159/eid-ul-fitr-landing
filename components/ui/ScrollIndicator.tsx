@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { IconChevronUp } from "@tabler/icons-react";
 
 export default function ScrollIndicator() {
   const [scrollY, setScrollY] = useState(0);
@@ -78,40 +79,17 @@ export default function ScrollIndicator() {
           key="scroll-up"
           type="button"
           aria-label="Scroll to top"
-          className="fixed bottom-6 left-1/2 z-50 flex min-h-[44px] min-w-[44px] -translate-x-1/2 flex-col items-center gap-2 text-center will-change-transform md:bottom-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, y: 10, transition: { duration: 0.5 } }}
-          transition={{ duration: 0.5 }}
+          className="fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-eid-gold/10 border border-eid-gold/30 text-eid-gold backdrop-blur-md transition-all hover:bg-eid-gold/20 hover:scale-110 md:bottom-12 md:right-12 shadow-lg"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
+          transition={{ duration: 0.3 }}
           onClick={() =>
             typeof window !== "undefined" &&
             window.scrollTo({ top: 0, behavior: "smooth" })
           }
         >
-          <div className="relative h-9 w-[2px] bg-eid-gold/80">
-            <motion.span
-              className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-eid-gold"
-              animate={{ y: [0, -30, 0] }}
-              transition={{
-                duration: 1.8,
-                ease: "easeInOut",
-                repeat: Number.POSITIVE_INFINITY,
-              }}
-            />
-          </div>
-          <motion.span
-            lang="ar"
-            dir="rtl"
-            className="text-center font-arabic text-[clamp(0.8rem,3vw,1.1rem)] text-eid-gold"
-            animate={{ opacity: [0.3, 0.9, 0.3] }}
-            transition={{
-              duration: 2.5,
-              ease: "easeInOut",
-              repeat: Number.POSITIVE_INFINITY,
-            }}
-          >
-         
-          </motion.span>
+          <IconChevronUp size={24} stroke={2.5} />
         </motion.button>
       ) : null}
     </AnimatePresence>

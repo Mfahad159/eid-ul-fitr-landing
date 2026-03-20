@@ -142,7 +142,7 @@ export function HeroSection() {
 
             <button
               onClick={() => setGameOpen(true)}
-              className="group relative overflow-hidden rounded-full px-8 py-4 text-base font-semibold tracking-wide bg-eid-gold text-eid-black border-2 border-eid-gold hover:bg-transparent hover:text-eid-gold transition-all duration-300 ease-out scale-105 hover:scale-110 shadow-[0_0_30px_rgba(201,168,76,0.3)] hover:shadow-[0_0_50px_rgba(201,168,76,0.5)] w-full sm:w-auto"
+              className="group relative overflow-hidden rounded-full px-8 py-4 text-base font-semibold tracking-wide bg-eid-gold text-eid-black border-2 border-eid-gold hover:bg-transparent hover:text-eid-gold transition-all duration-300 ease-out scale-105 hover:scale-110 shadow-[0_0_30px_rgba(201,168,76,0.3)] hover:shadow-[0_0_50px_rgba(201,168,76,0.5)] w-[85%] max-w-[280px] mx-auto sm:mx-0 sm:w-auto sm:max-w-none"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Collect your Eidee!
