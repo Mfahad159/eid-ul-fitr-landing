@@ -21,6 +21,15 @@ const config: Config = {
         body: ["var(--font-body)", "DM Sans", "sans-serif"],
         arabic: ["var(--font-arabic)", "Scheherazade New", "serif"],
       },
+      keyframes: {
+        shimmer: {
+          '0%': { backgroundPosition: '200% center' },
+          '100%': { backgroundPosition: '-200% center' },
+        }
+      },
+      animation: {
+        shimmer: 'shimmer 3s linear infinite'
+      }
     },
   },
   plugins: [],

@@ -1,14 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence, motion, useTransform } from "framer-motion";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import { useMotionSettings } from "@/lib/useMotionSettings";
 import { Tooltip } from "@/components/ui/Tooltip";
 import confetti from "canvas-confetti";
+import { IconCoin } from "@tabler/icons-react";
+import { EideeGameModal } from "@/components/ui/EideeGameModal";
 
 const headingCharacters = "Eid Mubarak".split("");
 
 export function HeroSection() {
+  const [gameOpen, setGameOpen] = useState(false);
   const scrollYProgress = useScrollProgress();
   const { isMobile, shouldReduceMotion } = useMotionSettings();
   const parallaxEnd = shouldReduceMotion ? 0 : isMobile ? -30 : -80;
@@ -123,7 +127,7 @@ export function HeroSection() {
             data-aos="fade-up"
             data-aos-duration="800"
             data-aos-delay="550"
-            className="mt-8 w-full sm:w-auto"
+            className="mt-8 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row"
           >
             <Tooltip label="Click to celebrate! 🎊" placement="top">
               <button
@@ -135,9 +139,25 @@ export function HeroSection() {
                 <span className="relative z-10">Send Eid Wishes</span>
               </button>
             </Tooltip>
+
+            <button
+              onClick={() => setGameOpen(true)}
+              className="group relative overflow-hidden rounded-full px-8 py-4 text-base font-semibold tracking-wide bg-eid-gold text-eid-black border-2 border-eid-gold hover:bg-transparent hover:text-eid-gold transition-all duration-300 ease-out scale-105 hover:scale-110 shadow-[0_0_30px_rgba(201,168,76,0.3)] hover:shadow-[0_0_50px_rgba(201,168,76,0.5)] w-full sm:w-auto"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                Collect your Eidee!
+                <IconCoin size={18} />
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-eid-gold via-eid-gold-light to-eid-gold bg-[length:200%] animate-shimmer" />
+            </button>
           </div>
         </div>
       </motion.section>
+
+      <EideeGameModal 
+        isOpen={gameOpen} 
+        onClose={() => setGameOpen(false)} 
+      />
     </AnimatePresence>
   );
 }

@@ -62,28 +62,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
 
       animsRef.current.push(
         anime({
-          targets: "#line-left",
-          strokeDashoffset: [0, -285],
-          duration: 700,
-          delay: 0,
-          easing: "easeOutExpo",
-        }),
-        anime({
-          targets: "#line-right",
-          strokeDashoffset: [285, 0],
-          duration: 700,
-          delay: 0,
-          easing: "easeOutExpo",
-        }),
-        anime({
-          targets: "#diamond",
-          opacity: [0, 1],
-          scale: [0, 1],
-          duration: 300,
-          delay: 400,
-          easing: "easeOutBack",
-        }),
-        anime({
           targets: "#text-arabic",
           strokeDashoffset: [arabicLen, 0],
           duration: 2400,
@@ -110,13 +88,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
           },
         }),
         anime({
-          targets: "#divider",
-          strokeDashoffset: [200, 0],
-          duration: 400,
-          delay: 2800,
-          easing: "easeOutExpo",
-        }),
-        anime({
           targets: "#text-year",
           strokeDashoffset: [yearLen, 0],
           duration: 900,
@@ -132,20 +103,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
               })
             );
           },
-        }),
-        anime({
-          targets: "#line-bottom-left",
-          strokeDashoffset: [0, -285],
-          duration: 600,
-          delay: 3600,
-          easing: "easeOutExpo",
-        }),
-        anime({
-          targets: "#line-bottom-right",
-          strokeDashoffset: [285, 0],
-          duration: 600,
-          delay: 3600,
-          easing: "easeOutExpo",
         })
       );
 
@@ -226,38 +183,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
         style={{ width: "min(720px, 92vw)" }}
         direction="rtl"
       >
-        <line
-          id="line-left"
-          x1="385"
-          y1="28"
-          x2="100"
-          y2="28"
-          stroke="#c9a84c"
-          strokeWidth="0.8"
-          strokeDasharray="285"
-          strokeDashoffset="285"
-          opacity="0.5"
-        />
-        <line
-          id="line-right"
-          x1="415"
-          y1="28"
-          x2="700"
-          y2="28"
-          stroke="#c9a84c"
-          strokeWidth="0.8"
-          strokeDasharray="285"
-          strokeDashoffset="285"
-          opacity="0.5"
-        />
-        <polygon
-          id="diamond"
-          points="400,18 407,28 400,38 393,28"
-          fill="none"
-          stroke="#c9a84c"
-          strokeWidth="1"
-          opacity="0"
-        />
         <text
           id="text-arabic"
           x="400"
@@ -281,18 +206,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
         >
           عيد الفطر
         </text>
-        <line
-          id="divider"
-          x1="300"
-          y1="148"
-          x2="500"
-          y2="148"
-          stroke="#c9a84c"
-          strokeWidth="0.5"
-          strokeDasharray="200"
-          strokeDashoffset="200"
-          opacity="0.35"
-        />
         <text
           id="text-year"
           x="400"
@@ -309,30 +222,6 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
         >
           2026
         </text>
-        <line
-          id="line-bottom-left"
-          x1="385"
-          y1="208"
-          x2="100"
-          y2="208"
-          stroke="#c9a84c"
-          strokeWidth="0.8"
-          strokeDasharray="285"
-          strokeDashoffset="285"
-          opacity="0.5"
-        />
-        <line
-          id="line-bottom-right"
-          x1="415"
-          y1="208"
-          x2="700"
-          y2="208"
-          stroke="#c9a84c"
-          strokeWidth="0.8"
-          strokeDasharray="285"
-          strokeDashoffset="285"
-          opacity="0.5"
-        />
       </svg>
 
       <div className="mt-8 h-px w-[min(300px,80vw)] bg-[rgba(201,168,76,0.1)]">
