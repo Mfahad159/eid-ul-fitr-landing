@@ -9,7 +9,7 @@ export async function POST(req: Request) {
     // Max possible taps in 7s at ~8 taps/sec = ~56 taps
     // Max score without cheating = 500
     const maxReasonableTaps = 70
-    const maxScore = 500
+    const maxScore = 300
 
     if (
       score > maxScore ||
@@ -29,14 +29,43 @@ export async function POST(req: Request) {
     
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
     
-    const { error } = await supabase.from('eid_scores').upsert(
-      { name: name.trim(), score },
-      { onConflict: 'name', ignoreDuplicates: false }
-    )
+    const trimmedName = name.trim()
+    
+    // Check if player already exists (case-insensitive)
+    const { data: existing, error: fetchError } = await supabase
+      .from('eid_scores')
+      .select('id, score')
+      .ilike('name', trimmedName)
+      .maybeSingle()
+      
+    if (fetchError) {
+      console.error('Supabase fetch error:', fetchError)
+      return NextResponse.json({ error: 'Failed to check existing score' }, { status: 500 })
+    }
 
-    if (error) {
-      console.error('Supabase upsert error:', error)
-      return NextResponse.json({ error: 'Failed to save score' }, { status: 500 })
+    if (existing) {
+      // Only update if the new score is higher
+      if (score > existing.score) {
+        const { error: updateError } = await supabase
+          .from('eid_scores')
+          .update({ score, name: trimmedName })
+          .eq('id', existing.id)
+          
+        if (updateError) {
+          console.error('Supabase update error:', updateError)
+          return NextResponse.json({ error: 'Failed to update score' }, { status: 500 })
+        }
+      }
+    } else {
+      // Insert new player
+      const { error: insertError } = await supabase
+        .from('eid_scores')
+        .insert({ name: trimmedName, score })
+        
+      if (insertError) {
+        console.error('Supabase insert error:', insertError)
+        return NextResponse.json({ error: 'Failed to insert score' }, { status: 500 })
+      }
     }
 
     return NextResponse.json({ success: true })

@@ -38,6 +38,33 @@ export function EideeGame({ onClose }: EideeGameProps) {
   // Name Entry state
   const [playerName, setPlayerName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [triesLeft, setTriesLeft] = useState<number | null>(null);
+
+  useEffect(() => {
+    const storedTries = localStorage.getItem("eid_game_tries");
+    const storedName = localStorage.getItem("eid_game_name");
+    
+    if (storedTries !== null) {
+      setTriesLeft(parseInt(storedTries, 10));
+    } else {
+      setTriesLeft(3);
+    }
+    
+    if (storedName) {
+      setPlayerName(storedName);
+    }
+  }, []);
+
+  function startGame() {
+    if (triesLeft === null || triesLeft <= 0) return;
+    
+    localStorage.setItem("eid_game_name", playerName.trim());
+    const newTries = triesLeft - 1;
+    localStorage.setItem("eid_game_tries", newTries.toString());
+    setTriesLeft(newTries);
+    
+    setScreen("playing");
+  }
 
   // Refs for real-time game logic
   const startTimeRef = useRef(0);
@@ -84,8 +111,10 @@ export function EideeGame({ onClose }: EideeGameProps) {
   }, [screen]);
 
   function endGame() {
-    const finalEidee = Math.round(Math.pow(powerRef.current / 100, 2.8) * 500);
-    const clampedEidee = Math.min(500, Math.max(0, finalEidee));
+    // Making it easier: exponent 1.2 instead of 2.8, max 200, min 30 (if they tapped at all)
+    const baseScore = Math.pow(powerRef.current / 100, 1.2) * 170;
+    const finalEidee = tapCount > 0 ? Math.round(baseScore + 30) : 0;
+    const clampedEidee = Math.min(200, Math.max(0, finalEidee));
     setEidee(clampedEidee);
     setDisplayEidee(0);
 
@@ -199,10 +228,16 @@ export function EideeGame({ onClose }: EideeGameProps) {
 
       <button
         onClick={() => setScreen("name-entry")}
-        className="mt-8 w-full rounded-xl bg-eid-gold py-4 font-body font-bold text-eid-black transition-transform hover:scale-[1.03] active:scale-95 shadow-lg"
+        disabled={triesLeft === 0}
+        className="mt-8 w-full rounded-xl bg-eid-gold py-4 font-body font-bold text-eid-black transition-transform hover:scale-[1.03] active:scale-95 shadow-lg disabled:opacity-50 disabled:grayscale disabled:hover:scale-100"
       >
-        Start
+        {triesLeft === 0 ? "Out of tries!" : "Start"}
       </button>
+      {triesLeft !== null && (
+        <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-eid-gold/60">
+          Tries left: {triesLeft} / 3
+        </p>
+      )}
     </div>
   );
 
@@ -330,14 +365,17 @@ export function EideeGame({ onClose }: EideeGameProps) {
 
       <div className="mt-12 flex w-full max-w-[280px] gap-3">
         <button
-          onClick={() => setScreen("playing")}
+          onClick={() => {
+            setPlayerName(""); // clear name so it skips leaderboard submission
+            startGame();
+          }}
           className="flex-1 rounded-xl border border-eid-gold/30 bg-transparent py-3 font-body text-sm font-bold text-eid-gold transition-colors hover:bg-eid-gold/10"
         >
           Skip
         </button>
         <button
           onClick={() => {
-            if (playerName.trim()) setScreen("playing");
+            if (playerName.trim()) startGame();
           }}
           disabled={!playerName.trim()}
           className="flex-1 rounded-xl bg-eid-gold py-3 font-body text-sm font-bold text-eid-black transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
@@ -433,7 +471,7 @@ function TapButton({
   return (
     <button
       onPointerDown={() => onTap()}
-      className={`relative flex-1 rounded-2xl border-2 py-6 transition-all duration-100 outline-none select-none touch-none ${
+      className={`relative flex-1 rounded-full border-2 py-6 transition-all duration-100 outline-none select-none touch-none ${
         flashWrong
           ? "border-red-500 bg-red-500/20 translate-x-[2px] -translate-y-[2px]"
           : flashRight
