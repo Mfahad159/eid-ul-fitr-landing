@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useTransform } from "framer-motion";
 import { useScrollProgress } from "@/lib/useScrollProgress";
 import { useMotionSettings } from "@/lib/useMotionSettings";
 import { Tooltip } from "@/components/ui/Tooltip";
+import confetti from "canvas-confetti";
 
 const headingCharacters = "Eid Mubarak".split("");
 
@@ -18,6 +19,35 @@ export function HeroSection() {
   const y = useTransform(scrollYProgress, [0, 0.3], [0, parallaxEnd]);
   const opacity = useTransform(scrollYProgress, [0, 0.25], [1, opacityEnd]);
   const scale = useTransform(scrollYProgress, [0, 0.3], [1, scaleEnd]);
+
+  const handleConfetti = () => {
+    const duration = 2500;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#C9A84C", "#0D3B2E", "#F5F0E8"],
+        zIndex: 100,
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#C9A84C", "#0D3B2E", "#F5F0E8"],
+        zIndex: 100,
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+  };
 
   return (
     <AnimatePresence>
@@ -98,6 +128,7 @@ export function HeroSection() {
             <Tooltip label="Click to celebrate! 🎊" placement="top">
               <button
                 type="button"
+                onClick={handleConfetti}
                 className="group relative min-h-[44px] w-full overflow-hidden rounded-full border border-eid-gold px-8 py-3 font-body text-sm font-medium uppercase tracking-[0.12em] text-eid-gold transition-all duration-300 ease-out hover:bg-eid-gold hover:text-eid-black focus:outline-none focus-visible:ring-2 focus-visible:ring-eid-gold/60 sm:w-auto"
               >
                 <span className="absolute inset-0 -translate-x-full bg-[linear-gradient(90deg,transparent,rgba(245,240,232,0.35),transparent)] transition-transform duration-700 ease-out group-hover:translate-x-full" />
