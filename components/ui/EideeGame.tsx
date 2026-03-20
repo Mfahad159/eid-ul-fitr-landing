@@ -80,6 +80,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
       clearInterval(decay);
       clearInterval(timer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [screen]);
 
   function endGame() {
@@ -341,7 +342,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
           disabled={!playerName.trim()}
           className="flex-1 rounded-xl bg-eid-gold py-3 font-body text-sm font-bold text-eid-black transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100"
         >
-          Let's Go!
+          Let&apos;s Go!
         </button>
       </div>
     </div>
