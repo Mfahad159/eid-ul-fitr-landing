@@ -23,7 +23,7 @@ export function SignatureSection() {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const arrowRef = useRef(null);
   const nameScale = useTransform(scrollYProgress, [0.6, 0.85], [0.85, 1]);
-  const nameOpacity = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
+
 
   const { refs, floatingStyles, context } = useFloating({
     open: tooltipOpen,
@@ -81,10 +81,9 @@ export function SignatureSection() {
         </div>
 
         <motion.h2
-          className="signature-name mt-6 font-display text-[clamp(2rem,8vw,5.5rem)] font-bold italic leading-none tracking-[-0.02em] will-change-transform"
+          className="signature-name mt-6 font-display text-[clamp(1.8rem,7vw,5rem)] font-bold italic leading-none tracking-normal will-change-transform pr-2 lg:pr-4"
           style={{
             scale: nameScale,
-            opacity: nameOpacity,
             animationDuration,
           }}
         >
@@ -109,7 +108,7 @@ export function SignatureSection() {
             className="signature-link inline-flex items-center gap-1.5 font-body text-[0.85rem] text-eid-gold/60 transition-opacity duration-300 hover:text-eid-gold hover:opacity-100"
             {...getReferenceProps()}
           >
-            <span>mfahad159.github.io/portfolio</span>
+            <span>Portfolio</span>
             <IconArrowUpRight size={14} stroke={1.7} />
           </a>
 

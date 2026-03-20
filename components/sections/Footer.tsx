@@ -49,7 +49,7 @@ export function Footer() {
           data-aos-duration="500"
           data-aos-delay="400"
         >
-          Made with ♥ for Eid 1446H
+          Made with ♥ By Fahad
         </p>
       </div>
     </footer>

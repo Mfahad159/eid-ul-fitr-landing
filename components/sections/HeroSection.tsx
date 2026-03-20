@@ -37,7 +37,7 @@ export function HeroSection() {
               dir="rtl"
               className="text-center font-arabic text-xl text-eid-gold/90 md:text-3xl"
             >
-              عيد مبارك
+              1447 ـ عيد مبارك
             </div>
           </div>
 

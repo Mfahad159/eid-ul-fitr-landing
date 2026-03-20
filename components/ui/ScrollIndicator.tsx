@@ -110,7 +110,7 @@ export default function ScrollIndicator() {
               repeat: Number.POSITIVE_INFINITY,
             }}
           >
-            مرر للأعلى
+         
           </motion.span>
         </motion.button>
       ) : null}
