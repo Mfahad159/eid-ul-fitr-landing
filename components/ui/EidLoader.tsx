@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-// @ts-expect-error - NextJS needs the direct ESM path which lacks ambient types
 import anime from "animejs/lib/anime.es.js";
 
 const patternSvg = `
@@ -64,14 +63,14 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
       animsRef.current.push(
         anime({
           targets: "#line-left",
-          strokeDashoffset: [0, -300],
+          strokeDashoffset: [0, -285],
           duration: 700,
           delay: 0,
           easing: "easeOutExpo",
         }),
         anime({
           targets: "#line-right",
-          strokeDashoffset: [300, 0],
+          strokeDashoffset: [285, 0],
           duration: 700,
           delay: 0,
           easing: "easeOutExpo",
@@ -136,14 +135,14 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
         }),
         anime({
           targets: "#line-bottom-left",
-          strokeDashoffset: [0, -300],
+          strokeDashoffset: [0, -285],
           duration: 600,
           delay: 3600,
           easing: "easeOutExpo",
         }),
         anime({
           targets: "#line-bottom-right",
-          strokeDashoffset: [300, 0],
+          strokeDashoffset: [285, 0],
           duration: 600,
           delay: 3600,
           easing: "easeOutExpo",
@@ -229,26 +228,26 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
       >
         <line
           id="line-left"
-          x1="400"
+          x1="385"
           y1="28"
           x2="100"
           y2="28"
           stroke="#c9a84c"
           strokeWidth="0.8"
-          strokeDasharray="300"
-          strokeDashoffset="300"
+          strokeDasharray="285"
+          strokeDashoffset="285"
           opacity="0.5"
         />
         <line
           id="line-right"
-          x1="400"
+          x1="415"
           y1="28"
           x2="700"
           y2="28"
           stroke="#c9a84c"
           strokeWidth="0.8"
-          strokeDasharray="300"
-          strokeDashoffset="300"
+          strokeDasharray="285"
+          strokeDashoffset="285"
           opacity="0.5"
         />
         <polygon
@@ -312,26 +311,26 @@ export default function EidLoader({ onComplete }: { onComplete?: () => void }) {
         </text>
         <line
           id="line-bottom-left"
-          x1="400"
+          x1="385"
           y1="208"
           x2="100"
           y2="208"
           stroke="#c9a84c"
           strokeWidth="0.8"
-          strokeDasharray="300"
-          strokeDashoffset="300"
+          strokeDasharray="285"
+          strokeDashoffset="285"
           opacity="0.5"
         />
         <line
           id="line-bottom-right"
-          x1="400"
+          x1="415"
           y1="208"
           x2="700"
           y2="208"
           stroke="#c9a84c"
           strokeWidth="0.8"
-          strokeDasharray="300"
-          strokeDashoffset="300"
+          strokeDasharray="285"
+          strokeDashoffset="285"
           opacity="0.5"
         />
       </svg>

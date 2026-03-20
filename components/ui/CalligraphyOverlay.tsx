@@ -214,13 +214,6 @@ export default function CalligraphyOverlay({
             }}
           />
 
-          <motion.div
-            aria-hidden="true"
-            className="absolute left-0 top-1/2 h-[2px] w-full origin-left bg-eid-gold"
-            initial={{ scaleX: 0, opacity: 0.8 }}
-            animate={{ scaleX: 1, opacity: 0.45 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          />
 
           <div className="pointer-events-none absolute left-1/2 top-1/2">
             {particles.map((particle, index) => (
@@ -299,9 +292,9 @@ export default function CalligraphyOverlay({
                 <AnimatePresence>
                   {showName ? (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.85, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 1.2, ease: [0.34, 1.56, 0.64, 1] }}
+                      initial={{ opacity: 1, clipPath: "inset(0 0 0 100%)" }}
+                      animate={{ opacity: 1, clipPath: "inset(0 0 0 0%)" }}
+                      transition={{ duration: 1.8, ease: "easeInOut" }}
                     >
                       <h2
                         className="calligraphy-overlay-name text-center font-arabic font-bold leading-none"
