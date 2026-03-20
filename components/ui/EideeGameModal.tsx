@@ -37,10 +37,7 @@ export function EideeGameModal({ isOpen, onClose }: EideeGameModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div
-          className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm"
-          onClick={onClose}
-        >
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
           <motion.div
             className="relative w-full max-w-[480px] overflow-hidden rounded-[24px] border border-eid-gold/20 bg-[#0d1f18]"
             onClick={(e) => e.stopPropagation()}

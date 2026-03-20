@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import confetti from "canvas-confetti";
 
-type Screen = "intro" | "playing" | "name-entry" | "result";
+type Screen = "intro" | "playing" | "name-entry" | "times-up" | "result";
 
 const DURATION_MS = 7000;
 const DECAY_RATE = 0.018; // power lost per 50ms tick
@@ -123,7 +123,11 @@ export function EideeGame({ onClose }: EideeGameProps) {
     if (clampedEidee >= 10 && playerName.trim()) {
       submitScoreBackground(clampedEidee);
     }
-    showResultScreen(clampedEidee);
+    
+    setScreen("times-up");
+    setTimeout(() => {
+      showResultScreen(clampedEidee);
+    }, 3000);
   }
 
   function showResultScreen(eideeAmt: number) {
@@ -346,6 +350,17 @@ export function EideeGame({ onClose }: EideeGameProps) {
     );
   };
 
+  const renderTimesUp = () => (
+    <div className="flex h-full min-h-[460px] flex-col items-center justify-center p-8 text-center animate-in zoom-in duration-300">
+      <h2 className="mb-4 font-display text-5xl uppercase tracking-widest text-eid-gold drop-shadow-lg">
+        Time&apos;s Up!
+      </h2>
+      <p className="font-body text-lg text-eid-cream/80 animate-pulse">
+        Calculating Eidee...
+      </p>
+    </div>
+  );
+
   const renderNameEntry = () => (
     <div className="flex h-full min-h-[460px] flex-col items-center justify-center p-8 pt-12 text-center">
       <h2 className="font-body text-[1.1rem] text-eid-cream">
@@ -367,15 +382,6 @@ export function EideeGame({ onClose }: EideeGameProps) {
       </div>
 
       <div className="mt-12 flex w-full max-w-[280px] gap-3">
-        <button
-          onClick={() => {
-            setPlayerName(""); // clear name so it skips leaderboard submission
-            startGame();
-          }}
-          className="flex-1 rounded-xl border border-eid-gold/30 bg-transparent py-3 font-body text-sm font-bold text-eid-gold transition-colors hover:bg-eid-gold/10"
-        >
-          Skip
-        </button>
         <button
           onClick={() => {
             if (playerName.trim()) startGame();
@@ -453,6 +459,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
       {screen === "intro" && renderIntro()}
       {screen === "playing" && renderPlaying()}
       {screen === "name-entry" && renderNameEntry()}
+      {screen === "times-up" && renderTimesUp()}
       {screen === "result" && renderResult()}
     </div>
   );
