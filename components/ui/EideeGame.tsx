@@ -70,6 +70,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
   const startTimeRef = useRef(0);
   const lastTapRef = useRef(0);
   const seqIdxRef = useRef(0);
+  const tapCountRef = useRef(0); // sync with state to prevent stale closures
   const powerRef = useRef(0); // sync with state for final calc
 
   useEffect(() => {
@@ -83,6 +84,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
     startTimeRef.current = Date.now();
     lastTapRef.current = 0;
     seqIdxRef.current = 0;
+    tapCountRef.current = 0;
     setPower(0);
     setTapCount(0);
     setTimeLeft(DURATION_MS);
@@ -113,7 +115,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
   function endGame() {
     // Making it easier: exponent 1.2 instead of 2.8, max 200, min 30 (if they tapped at all)
     const baseScore = Math.pow(powerRef.current / 100, 1.2) * 170;
-    const finalEidee = tapCount > 0 ? Math.round(baseScore + 30) : 0;
+    const finalEidee = tapCountRef.current > 0 ? Math.round(baseScore + 30) : 0;
     const clampedEidee = Math.min(200, Math.max(0, finalEidee));
     setEidee(clampedEidee);
     setDisplayEidee(0);
@@ -147,7 +149,7 @@ export function EideeGame({ onClose }: EideeGameProps) {
         body: JSON.stringify({
           name: playerName.slice(0, 20),
           score: scoreAmt,
-          tapCount,
+          tapCount: tapCountRef.current,
           duration: DURATION_MS
         })
       });
@@ -192,7 +194,8 @@ export function EideeGame({ onClose }: EideeGameProps) {
 
     lastTapRef.current = now;
     seqIdxRef.current++;
-    setTapCount((c) => c + 1);
+    tapCountRef.current++;
+    setTapCount(tapCountRef.current);
 
     setFlashRightSide(side);
     setTimeout(() => setFlashRightSide(null), 80);
