@@ -7,7 +7,7 @@ import { useMotionSettings } from "@/lib/useMotionSettings";
 import { Tooltip } from "@/components/ui/Tooltip";
 import confetti from "canvas-confetti";
 import { IconCoin } from "@tabler/icons-react";
-import { EideeGameModal } from "@/components/ui/EideeGameModal";
+import { EideeGameModal } from "../ui/EideeGameModal";
 
 const headingCharacters = "Eid Mubarak".split("");
 

@@ -360,16 +360,10 @@ function TapButton({
   flashRight: boolean;
   onTap: () => void;
 }) {
-  const handleTouch = (e: React.TouchEvent) => {
-    e.preventDefault();
-    onTap();
-  };
-
   return (
     <button
-      onClick={onTap}
-      onTouchStart={handleTouch}
-      className={`relative flex-1 rounded-2xl border-2 py-6 transition-all duration-100 outline-none select-none ${
+      onPointerDown={() => onTap()}
+      className={`relative flex-1 rounded-2xl border-2 py-6 transition-all duration-100 outline-none select-none touch-none ${
         flashWrong
           ? "border-red-500 bg-red-500/20 translate-x-[2px] -translate-y-[2px]"
           : flashRight
